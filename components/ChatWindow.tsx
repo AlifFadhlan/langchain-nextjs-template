@@ -11,6 +11,7 @@ import type { AgentStep } from "langchain/schema";
 import { ChatMessageBubble } from "@/components/ChatMessageBubble";
 import { UploadDocumentsForm } from "@/components/UploadDocumentsForm";
 import { IntermediateStep } from "./IntermediateStep";
+import { Message } from 'ai';
 
 export function ChatWindow(props: {
   endpoint: string,
@@ -46,9 +47,11 @@ export function ChatWindow(props: {
         const messageIndexHeader = response.headers.get("x-message-index");
         if (sources.length && messageIndexHeader !== null) {
           setSourcesForMessages({...sourcesForMessages, [messageIndexHeader]: sources});
+          console.log(sourcesForMessages);
         }
       },
       onError: (e) => {
+        console.error(e);
         toast(e.message, {
           theme: "dark"
         });
@@ -74,6 +77,7 @@ export function ChatWindow(props: {
       setInput("");
       const messagesWithUserReply = messages.concat({ id: messages.length.toString(), content: input, role: "user" });
       setMessages(messagesWithUserReply);
+      console.log(messagesWithUserReply);
       const response = await fetch(endpoint, {
         method: "POST",
         body: JSON.stringify({
@@ -83,7 +87,9 @@ export function ChatWindow(props: {
       });
       const json = await response.json();
       setIntermediateStepsLoading(false);
+      
       if (response.status === 200) {
+        console.log(json);
         // Represent intermediate steps as system messages for display purposes
         const intermediateStepMessages = (json.intermediate_steps ?? []).map((intermediateStep: AgentStep, i: number) => {
           return {id: (messagesWithUserReply.length + i).toString(), content: JSON.stringify(intermediateStep), role: "system"};
@@ -95,6 +101,7 @@ export function ChatWindow(props: {
           await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
         }
         setMessages([...newMessages, { id: (newMessages.length + intermediateStepMessages.length).toString(), content: json.output, role: "assistant" }]);
+        saveMessages(messagesWithUserReply);
       } else {
         if (json.error) {
           toast(json.error, {
@@ -105,7 +112,25 @@ export function ChatWindow(props: {
       }
     }
   }
-
+  const saveMessages = async(messages : Message[]) => {
+    try {
+      const response = await fetch('/api/save', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ messages }),
+      });
+  
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+  
+      console.log('Submitted');
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  };
   return (
     <div className={`flex flex-col items-center p-4 md:p-8 rounded grow overflow-hidden ${(messages.length > 0 ? "border" : "")}`}>
       <h2 className={`${messages.length > 0 ? "" : "hidden"} text-2xl`}>{emoji} {titleText}</h2>
@@ -136,7 +161,7 @@ export function ChatWindow(props: {
           <input
             className="grow mr-8 p-4 rounded"
             value={input}
-            placeholder={placeholder ?? "What's it like to be a pirate?"}
+            placeholder={placeholder}
             onChange={handleInputChange}
           />
           <button type="submit" className="shrink-0 px-8 py-4 bg-sky-600 rounded w-28">
