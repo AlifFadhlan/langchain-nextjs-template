@@ -1,9 +1,10 @@
 "use client";
-
+import type { Message } from "ai/react";
 import React, { useState, useEffect } from 'react';
 
-export default function ModalSubmit() {
+export default function ModalSubmit(props: { message: Message, sources: any[]}) {
     const [show, setShow] = useState(false);
+    const messages = props.message;
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -16,15 +17,14 @@ export default function ModalSubmit() {
   const handleClose = () => setShow(false);
 
   const handleSubmit = async() => {
+    // const messages = [
+    //   {"role":"user","content":"halo"},
+    //   {"role":"assistant","content":" Apa pengalaman Anda dalam merancang antarmuka pengguna (UI) dan pengalaman pengguna (UX)?"},
+    //   {"role":"user","content":"Saya pernah magang di perusahaan yang fokus pada pembangunan website"},
+    //   {"role":"assistant","content":" Apa proyek konkret yang Anda kerjakan selama magang tersebut dan bagaimana Anda berkontribusi dalam merancang antarmuka pengguna (UI) dan pengalaman pengguna (UX)?"},
+    //   {"role":"user","content":"Proyek yang saya buat adalah proyek untuk desain sebuah website management asset yang digunakan oleh karyawan"}
+    // ];
   try {
-    const messages = [
-      {"role":"user","content":"halo"},
-      {"role":"assistant","content":" Apa pengalaman Anda dalam merancang antarmuka pengguna (UI) dan pengalaman pengguna (UX)?"},
-      {"role":"user","content":"Saya pernah magang di perusahaan yang fokus pada pembangunan website"},
-      {"role":"assistant","content":" Apa proyek konkret yang Anda kerjakan selama magang tersebut dan bagaimana Anda berkontribusi dalam merancang antarmuka pengguna (UI) dan pengalaman pengguna (UX)?"},
-      {"role":"user","content":"Proyek yang saya buat adalah proyek untuk desain sebuah website management asset yang digunakan oleh karyawan"}
-    ];
-
     const response = await fetch('/api/save', {
       method: 'POST',
       headers: {
@@ -37,7 +37,7 @@ export default function ModalSubmit() {
       throw new Error('Network response was not ok');
     }
 
-    console.log('Submitted');
+    console.log(response.json()); 
     handleClose();
   } catch (error) {
     console.error('Error:', error);
@@ -80,5 +80,5 @@ export default function ModalSubmit() {
         </div>
       )}
       </>
-  )
+  );
 }

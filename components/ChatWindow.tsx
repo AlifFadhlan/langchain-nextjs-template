@@ -13,6 +13,8 @@ import { UploadDocumentsForm } from "@/components/UploadDocumentsForm";
 import { IntermediateStep } from "./IntermediateStep";
 import { Message } from 'ai';
 
+import  ModalSubmit  from "@/components/ModalSubmit";
+
 export function ChatWindow(props: {
   endpoint: string,
   emptyStateComponent: ReactElement,
@@ -89,7 +91,7 @@ export function ChatWindow(props: {
       setIntermediateStepsLoading(false);
       
       if (response.status === 200) {
-        console.log(json);
+        console.log(response.json());
         // Represent intermediate steps as system messages for display purposes
         const intermediateStepMessages = (json.intermediate_steps ?? []).map((intermediateStep: AgentStep, i: number) => {
           return {id: (messagesWithUserReply.length + i).toString(), content: JSON.stringify(intermediateStep), role: "system"};
@@ -101,7 +103,7 @@ export function ChatWindow(props: {
           await new Promise(resolve => setTimeout(resolve, 1000 + Math.random() * 1000));
         }
         setMessages([...newMessages, { id: (newMessages.length + intermediateStepMessages.length).toString(), content: json.output, role: "assistant" }]);
-        saveMessages(messagesWithUserReply);
+        
       } else {
         if (json.error) {
           toast(json.error, {
@@ -112,26 +114,28 @@ export function ChatWindow(props: {
       }
     }
   }
-  const saveMessages = async(messages : Message[]) => {
-    try {
-      const response = await fetch('/api/save', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ messages }),
-      });
+  // const saveMessages = async() => {
+  //   try {
+  //     const response = await fetch('/api/save', {
+  //       method: 'GET',
+  //       headers: {
+  //         'Content-Type': 'application/json',
+  //       },
+  //       body: JSON.stringify({ messages }),
+  //     });
   
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
+  //     if (!response.ok) {
+  //       throw new Error('Network response was not ok');
+  //     }
   
-      console.log('Submitted');
-    } catch (error) {
-      console.error('Error:', error);
-    }
-  };
+  //     console.log('Submitted');
+  //   } catch (error) {
+  //     console.error('Error:', error);
+  //   }
+  // };
   return (
+    <>
+    
     <div className={`flex flex-col items-center p-4 md:p-8 rounded grow overflow-hidden ${(messages.length > 0 ? "border" : "")}`}>
       <h2 className={`${messages.length > 0 ? "" : "hidden"} text-2xl`}>{emoji} {titleText}</h2>
       {messages.length === 0 ? emptyStateComponent : ""}
@@ -178,5 +182,6 @@ export function ChatWindow(props: {
       </form>
       <ToastContainer/>
     </div>
+    </>
   );
 }
