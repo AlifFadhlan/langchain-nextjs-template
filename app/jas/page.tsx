@@ -6,7 +6,7 @@ import React, { useState, useEffect } from "react";
 export default function Home() {
   const InfoCard = (
     <div className="p-4 md:p-8 rounded bg-[#25252d] w-full max-h-[85%] overflow-hidden">
-      <h1 className="text-3xl md:text-4xl mb-4">Wawan the Interviewer 🤵</h1>
+      <h1 className="text-3xl md:text-4xl mb-4">Wawan the Jas 🤵</h1>
       <ul>
         <li className="text-l">
           1️⃣
@@ -58,7 +58,7 @@ export default function Home() {
         Selesai
       </button> */}
       <ChatWindow
-        endpoint="api/chat/test_prompt"
+        endpoint="api/chat/jas"
         emoji="🤵"
         titleText="Wawan the Interviewer 🤵"
         placeholder="Saya Wawan, pewawancara magang. Tanyakan sesuatu! 🤔"
