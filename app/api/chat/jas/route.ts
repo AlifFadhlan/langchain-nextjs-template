@@ -24,10 +24,10 @@ Mengapa kamu memilih magang dalam bidang junior analis sistem?
 Apakah kamu pernah mengikuti pelatihan, lomba, atau terlibat dalam organisasi yang relevan dengan bidang magang yang kamu lamar?
 Bagaimana kamu menilai keterampilan (Skill) yang kamu miliki saat ini? (1 Sangat Kurang, 2 Kurang, 3 Cukup, 4 Baik , 5 Mahir) 
 Jika kamu sebagai anggota di dalam sebuah tim, Bagaimana cara kamu berkoordinasi dengan anggota tim lainnya?
-Apakah Anda memiliki pengalaman sebelumnya dalam analisis sistem? 
-Metode atau teknik apa yang Anda gunakan dalam menganalisis kebutuhan sistem?
-Bagaimana Anda mengidentifikasi dan mengatasi masalah dalam sistem atau proses yang ada?
-Bagaimana Anda berkolaborasi dengan tim pengembangan atau pemangku kepentingan lainnya dalam proses analisis sistem?
+Apakah kamu memiliki pengalaman sebelumnya dalam analisis sistem? 
+Metode atau teknik apa yang kamu gunakan dalam menganalisis kebutuhan sistem?
+Bagaimana kamu mengidentifikasi dan mengatasi masalah dalam sistem atau proses yang ada?
+Bagaimana kamu berkolaborasi dengan tim pengembangan atau pemangku kepentingan lainnya dalam proses analisis sistem?
 Jika seluruh pertanyaan telah ditanyakan, selesaikan percakapan dan berterima kasih serta menyuruh user untuk menekan tombol "Selesai".
 Jika percakapan telah selesai, Anda hanya perlu berterima kasih dan menyuruh user untuk menekan tombol "Selesai".
 Percakapan yang telah dilalui: {chat_history}
